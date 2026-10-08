@@ -85,13 +85,13 @@ ROLES = [
 
 
 def header() -> None:
-    W, H = 1200, 470
+    W, H = 1200, 420
     rnd = random.Random(98)
 
     # data-graph constellation on the right
     nodes = []
     while len(nodes) < 22:
-        p = (rnd.uniform(760, 1150), rnd.uniform(60, 410))
+        p = (rnd.uniform(760, 1150), rnd.uniform(50, 370))
         if all(math.dist(p, q) > 58 for q in nodes):
             nodes.append(p)
     edges = set()
@@ -138,17 +138,6 @@ def header() -> None:
             f'<animateMotion dur="{dur:.2f}s" begin="{k * 0.7:.1f}s" repeatCount="indefinite" path="{d}"/>'
             f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="{dur:.2f}s" '
             f'begin="{k * 0.7:.1f}s" repeatCount="indefinite"/></circle>')
-
-    # location pill
-    pill_txt = "MADRID, ES  ·  DATA SYSTEMS ENG. @ UPM"
-    pw = spaced_width(pill_txt, "jb400", 14, 1.6) + 56
-    pill = (f'<g class="rise" style="animation-delay:.1s">'
-            f'<rect x="68" y="62" width="{pw:.1f}" height="36" rx="18" fill="#ffffff" fill-opacity=".04" stroke="{STROKE}"/>'
-            f'<circle cx="90" cy="80" r="4.5" fill="{GREEN}"/>'
-            f'<circle cx="90" cy="80" r="4.5" fill="none" stroke="{GREEN}" stroke-width="1.5">'
-            f'<animate attributeName="r" values="4.5;12" dur="2s" repeatCount="indefinite"/>'
-            f'<animate attributeName="opacity" values=".9;0" dur="2s" repeatCount="indefinite"/></circle>'
-            f'<text x="106" y="85" class="jb w4" font-size="14" letter-spacing="1.6" fill="{MUTED}">{esc(pill_txt)}</text></g>')
 
     name = (f'<g class="rise" style="animation-delay:.25s">'
             f'<text x="62" y="210" class="sg w7" font-size="96" letter-spacing="-2.5" fill="{TEXT}">Alejandro</text></g>'
@@ -246,7 +235,7 @@ def header() -> None:
 <rect width="{W}" height="{H}" fill="url(#dots)" mask="url(#dotmask)"/>
 <rect class="scan" y="0" width="{W}" height="140" fill="url(#scan)"/>
 <g>{"".join(graph)}</g>
-{pill}{name}{"".join(typer)}{"".join(meta_svg)}
+<g transform="translate(0 -60)">{name}{"".join(typer)}{"".join(meta_svg)}</g>
 </g>
 <rect x=".75" y=".75" width="{W - 1.5}" height="{H - 1.5}" rx="27.5" stroke="url(#rim)" stroke-width="1.5"/>
 """
@@ -257,12 +246,8 @@ def header() -> None:
 # ── 2. section titles ──────────────────────────────────────────────────────
 
 SECTIONS = [
-    ("01", "About me", "whoami"),
-    ("02", "Featured work", "selected projects"),
-    ("03", "Data engineering lab", "stream → process → orchestrate → observe"),
-    ("04", "Tech stack", "tools I ship with"),
-    ("05", "Recognition", "2020 → 2026"),
-    ("06", "Live telemetry", "auto-updated daily"),
+    ("01", "Tech stack", "tools I ship with"),
+    ("02", "Recognition", "2020 → 2026"),
 ]
 
 
@@ -300,332 +285,65 @@ def section_titles() -> None:
 
 # ── 3. contact buttons ─────────────────────────────────────────────────────
 
-LINKEDIN = ('<rect x="{x}" y="{y}" width="30" height="30" rx="7" fill="#0A66C2"/>'
-            '<text x="{tx}" y="{ty}" text-anchor="middle" class="sg w7" font-size="19" fill="#fff">in</text>')
-MAIL = ('<g stroke="{c}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">'
-        '<rect x="{x}" y="{y1}" width="30" height="22" rx="4"/><path d="M{x} {y2} l15 10 l15 -10"/></g>')
-GLOBE = ('<g stroke="{c}" stroke-width="2.2"><circle cx="{cx}" cy="{cy}" r="14"/>'
-         '<ellipse cx="{cx}" cy="{cy}" rx="6.5" ry="14"/><path d="M{l} {cy} h28 M{l2} {t} h22 M{l2} {b} h22"/></g>')
+ENVELOPE = ('<g stroke="#fff" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" fill="none">'
+            '<rect x="{x}" y="{y}" width="30" height="22" rx="5"/><path d="M{x1} {y1} l11.5 8.5 l11.5 -8.5"/></g>')
+
+BUTTONS = [
+    # file, label, handle, colour a, colour b
+    ("linkedin", "LinkedIn", "in/alejandro-cuevas-cid", "#0A66C2", "#38bdf8"),
+    ("email", "Email", "alejandrocuevascm@gmail.com", PINK, VIOLET),
+]
 
 
 def buttons() -> None:
-    W, H = 300, 72
-    specs = [
-        ("linkedin", "LinkedIn", "#0A66C2"),
-        ("portfolio", "Portfolio", CYAN),
-        ("email", "Email me", PINK),
-    ]
-    for slug, label, col in specs:
-        ix, iy = 26, 21
+    W, H = 440, 104
+    r = H / 2 - 2
+    for i, (slug, label, handle, a, b) in enumerate(BUTTONS):
+        cx, cy = 54, H / 2
         if slug == "linkedin":
-            glyph = LINKEDIN.format(x=ix, y=iy, tx=ix + 15, ty=iy + 22)
-        elif slug == "email":
-            glyph = MAIL.format(c=col, x=ix, y1=iy + 4, y2=iy + 7)
+            glyph = (f'<text x="{cx}" y="{cy + 10}" text-anchor="middle" class="sg w7" font-size="30" '
+                     f'letter-spacing="-.5" fill="#fff">in</text>')
         else:
-            cx, cy = ix + 15, iy + 15
-            glyph = GLOBE.format(c=col, cx=cx, cy=cy, l=cx - 14, l2=cx - 11,
-                                 t=cy - 7, b=cy + 7)
-        tw = measure(label, "sg500", 24)
-        arrow_x = 74 + tw + 14
+            glyph = ENVELOPE.format(x=cx - 15, y=cy - 11, x1=cx - 11.5, y1=cy - 5)
+        pill = f'x="2" y="2" width="{W - 4}" height="{H - 4}" rx="{r}"'
         body = f"""
-<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" fill="{PANEL}"/>
-<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" fill="url(#tint)"/>
-<g clip-path="url(#c)"><rect class="shine" x="-120" y="-20" width="70" height="{H + 40}" fill="url(#sh)" transform="skewX(-20)"/></g>
-<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" stroke="url(#bd)" stroke-width="1.6"/>
+<rect {pill} fill="url(#bg)"/>
+<rect {pill} fill="url(#tint)"/>
+<g clip-path="url(#c)"><rect class="shine" x="-140" y="-20" width="80" height="{H + 40}" fill="url(#sh)"/></g>
+<rect {pill} stroke="#ffffff" stroke-opacity=".09" stroke-width="1.5"/>
+<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="5" stroke-linecap="round" stroke-dasharray="14 86" filter="url(#blur)" opacity=".8">
+<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="4s" repeatCount="indefinite"/></rect>
+<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="2" stroke-linecap="round" stroke-dasharray="14 86">
+<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="4s" repeatCount="indefinite"/></rect>
+<circle cx="{cx}" cy="{cy}" r="32" fill="none" stroke="{b}" stroke-width="1.5">
+<animate attributeName="r" values="32;46" dur="2.4s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values=".6;0" dur="2.4s" repeatCount="indefinite"/></circle>
+<circle cx="{cx}" cy="{cy}" r="32" fill="url(#disc)"/>
+<circle cx="{cx}" cy="{cy}" r="31.5" stroke="#fff" stroke-opacity=".25"/>
 {glyph}
-<text x="74" y="44" class="sg w5" font-size="24" fill="{TEXT}">{esc(label)}</text>
-<path d="M{arrow_x:.1f} 42 l9 -9 M{arrow_x + 2:.1f} 33 h7 v7" stroke="{MUTED}" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="104" y="{cy - 3}" class="sg w7" font-size="28" letter-spacing="-.4" fill="{TEXT}">{esc(label)}</text>
+<text x="105" y="{cy + 23}" class="jb w4" font-size="14.5" fill="{MUTED}">{esc(handle)}</text>
+<g class="arrow"><circle cx="{W - 46}" cy="{cy}" r="22" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".14"/>
+<path d="M{W - 52} {cy + 6} l12 -12 M{W - 49} {cy - 6} h9 v9" stroke="{TEXT}" stroke-width="2.2" stroke-linecap="round" fill="none"/></g>
 """
+        assert 105 + measure(handle, "jb400", 14.5) < W - 76, slug
         defs = f"""
-<clipPath id="c"><rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20"/></clipPath>
-<linearGradient id="tint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{col}" stop-opacity=".16"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></linearGradient>
-<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".13"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<linearGradient id="bd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{col}"/><stop offset=".5" stop-color="{STROKE}"/><stop offset="1" stop-color="{col}" stop-opacity=".5"/>{ROTATE_BORDER.format(dur=6)}</linearGradient>
+<clipPath id="c"><rect {pill}/></clipPath>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141831"/><stop offset="1" stop-color="{BG0}"/></linearGradient>
+<radialGradient id="tint" cx="0" cy=".5" r=".75"><stop offset="0" stop-color="{a}" stop-opacity=".35"/><stop offset="1" stop-color="{a}" stop-opacity="0"/></radialGradient>
+<linearGradient id="disc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>
+<linearGradient id="cm" x1="0" y1="0" x2="{W}" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>
+<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<filter id="blur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
 """
-        css = (".shine{animation:sh 4.5s ease-in-out infinite}"
-               "@keyframes sh{0%,55%{transform:skewX(-20deg) translateX(0)}100%{transform:skewX(-20deg) translateX(560px)}}")
-        save(f"buttons/{slug}.svg", document(body, W, H, ["sg500", "sg700"], css, label, defs))
+        css = (f".shine{{animation:sh 5s ease-in-out {i * 1.2:.1f}s infinite}}"
+               "@keyframes sh{0%,50%{transform:skewX(-20deg) translateX(0)}100%{transform:skewX(-20deg) translateX(720px)}}"
+               f".arrow{{animation:ar 3s ease-in-out {i * .5:.1f}s infinite}}"
+               "@keyframes ar{0%,70%,100%{transform:none}82%{transform:translateX(5px)}}")
+        save(f"buttons/{slug}.svg", document(body, W, H, ["sg700", "jb400"], css, f"{label} — {handle}", defs))
 
 
-# ── 4. terminal "whoami" ───────────────────────────────────────────────────
-
-C_KEY, C_STR, C_CMT = VIOLET, AMBER, DIM
-TERMINAL = [
-    ("cmd", "whoami"),
-    ("out", [("Alejandro Cuevas Cid", TEXT), (" — Data Systems Engineering student, 4th year", MUTED)]),
-    ("out", [("ETSIT · Universidad Politécnica de Madrid", MUTED), ("  (2023 → 2027)", C_CMT)]),
-    ("gap", None),
-    ("cmd", "cat profile.yml"),
-    ("out", [("focus:     ", C_KEY), ("[data engineering, applied AI, data platforms]", TEXT)]),
-    ("out", [("building:  ", C_KEY), ("Sportimizer", GREEN), (" — the ERP for Spanish sports clubs", TEXT)]),
-    ("out", [("impact:    ", C_KEY), ("-6 h/week admin work · -15-20% operational errors", TEXT)]),
-    ("out", [("cloud:     ", C_KEY), ("AWS · Docker · Kubernetes", TEXT)]),
-    ("out", [("speaks:    ", C_KEY), ("spanish (native) · english (C1)", TEXT)]),
-    ("out", [("superpower:", C_KEY), (' "explaining trade-offs to tech & non-tech people"', C_STR)]),
-    ("gap", None),
-    ("cmd", "ls ./trophies"),
-    ("out", [("BeTech_2025  IndesIA_2025  YouthIGF_2024  EdwingEd_2020  ", GREEN),
-             ("ActuaUPM_2026/", CYAN)]),
-    ("prompt", None),
-]
-
-
-def terminal() -> None:
-    W = 1200
-    fs, lh = 20, 33
-    cw = 0.6 * fs
-    top = 64
-    rows = [r for r in TERMINAL]
-    H = top + 34 + sum(lh if k != "gap" else 14 for k, _ in rows) - 4
-    prompt = "➜ ~ "
-    try:
-        measure(prompt, "jb700", fs)
-    except ValueError:
-        prompt = "> ~ "
-    pw = measure(prompt, "jb700", fs)
-    parts = []
-    y = top + 44
-    t = 0.6
-    x0 = 44
-    for kind, content in rows:
-        if kind == "gap":
-            y += 14
-            t += 0.15
-            continue
-        if kind in ("cmd", "prompt"):
-            parts.append(f'<g opacity="0"><set attributeName="opacity" to="1" begin="{t:.2f}s" fill="freeze"/>'
-                         f'<text x="{x0}" y="{y}" class="jb w7" font-size="{fs}" fill="{GREEN}">{esc(prompt)}</text></g>')
-            if kind == "prompt":
-                parts.append(f'<rect class="blink" x="{x0 + pw + 2:.1f}" y="{y - 18}" width="{cw * .62:.1f}" height="23" '
-                             f'rx="2" fill="{CYAN}" opacity="0"><set attributeName="opacity" to="1" begin="{t:.2f}s" fill="freeze"/></rect>')
-                break
-            n = len(content)
-            cid = f"c{y}"
-            parts.append(f'<clipPath id="{cid}"><rect x="{x0 + pw:.1f}" y="{y - 26}" width="0" height="36">'
-                         f'{typing_anim(n, cw, t + 0.25, cps=22)}</rect></clipPath>'
-                         f'<text clip-path="url(#{cid})" x="{x0 + pw:.1f}" y="{y}" class="jb w4" font-size="{fs}" '
-                         f'fill="{TEXT}">{esc(content)}</text>')
-            t += 0.25 + n / 22 + 0.35
-        else:
-            spans = "".join(f'<tspan fill="{c}">{esc(s)}</tspan>' for s, c in content)
-            total = sum(len(s) for s, _ in content)
-            assert total * cw < W - 2 * x0, (total, content)
-            parts.append(f'<g opacity="0"><animate attributeName="opacity" from="0" to="1" begin="{t:.2f}s" dur=".35s" fill="freeze"/>'
-                         f'<text x="{x0}" y="{y}" class="jb w4" font-size="{fs}" xml:space="preserve">{spans}</text></g>')
-            t += 0.11
-        y += lh
-
-    chrome = f"""
-<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" fill="{BG1}"/>
-<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" fill="url(#glowbg)"/>
-<path d="M1 21a20 20 0 0 1 20-20h{W - 42}a20 20 0 0 1 20 20v{top - 21}H1z" fill="#ffffff" fill-opacity=".025"/>
-<path d="M1 {top}H{W - 1}" stroke="{STROKE}"/>
-<circle cx="34" cy="{top / 2}" r="7" fill="#ff5f57"/><circle cx="58" cy="{top / 2}" r="7" fill="#febc2e"/><circle cx="82" cy="{top / 2}" r="7" fill="#28c840"/>
-<text x="{W / 2}" y="{top / 2 + 5}" text-anchor="middle" class="jb w4" font-size="15" fill="{DIM}">alejandro@madrid — ~/profile — zsh</text>
-<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" stroke="url(#bd)" stroke-width="1.5"/>
-"""
-    defs = f"""
-<radialGradient id="glowbg" cx="1" cy="0" r="1"><stop offset="0" stop-color="{PURPLE}" stop-opacity=".16"/><stop offset=".6" stop-color="{PURPLE}" stop-opacity="0"/></radialGradient>
-<linearGradient id="bd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{VIOLET}" stop-opacity=".7"/><stop offset=".4" stop-color="{STROKE}"/><stop offset=".75" stop-color="{STROKE}"/><stop offset="1" stop-color="{CYAN}" stop-opacity=".6"/>{ROTATE_BORDER.format(dur=12)}</linearGradient>
-"""
-    css = ".blink{animation:bk 1s steps(1) infinite}@keyframes bk{50%{fill-opacity:0}}"
-    save("about.svg", document(chrome + "".join(parts), W, H, ["jb400", "jb700"], css,
-                               "whoami — Alejandro Cuevas Cid", defs))
-
-
-# ── 5. project cards ───────────────────────────────────────────────────────
-
-PROJECTS = [
-    dict(
-        file="sportimizer", title="Sportimizer ERP", glyph="django",
-        tag="FOUNDER · 2024 → NOW", tag_c=GREEN, a=GREEN, b=CYAN,
-        desc="All-in-one ERP for Spanish sports clubs: players & families, coaches, physio, "
-             "leagues, accounting, inventory and federation (RFFM) sync — designed and led end-to-end.",
-        metric="−6 h/week saved  ·  −15–20% errors  ·  17 modules",
-        chips=[("Python", "python"), ("Django", "django"), ("Docker", "docker"), ("AWS", "amazonwebservices")],
-    ),
-    dict(
-        file="archtrace", title="ArchTrace Auditor", glyph="typescript",
-        tag="AI · DEV TOOLS", tag_c=VIOLET, a=VIOLET, b=PINK,
-        desc="Audits what AI agents changed before you accept it: deterministic rules, your repo's "
-             "own rules and a validated BYOK LLM, with diff review and a traceable report.",
-        metric="18 risk categories  ·  RAG over repo rules  ·  CI-ready",
-        chips=[("TypeScript", "typescript"), ("Next.js", "nextdotjs"), ("Ollama", "ollama"), ("tree-sitter", None)],
-    ),
-    dict(
-        file="albertitos", title="Albertitos · Maisa", glyph="anthropic",
-        tag="HACKSPAIN '26 · LIVE", tag_c=PINK, a=PINK, b=AMBER,
-        desc="AI accounts-payable decisioning: the LLM extracts, versioned rules decide PAY / REJECT / "
-             "ESCALATE — every decision traceable and replayable. I built the web console.",
-        metric="540 invoices decided  ·  718 tests  ·  0 pending",
-        chips=[("Next.js", "nextdotjs"), ("React", "react"), ("Tailwind", "tailwindcss"), ("Python", "python")],
-    ),
-    dict(
-        file="madrid", title="Madrid Commercial Intel", glyph="streamlit",
-        tag="LIVE DEMO", tag_c=CYAN, a=CYAN, b=VIOLET,
-        desc="Finds the best commercial premises in Madrid from public open data and a custom scoring "
-             "engine: demographics, competition, foot traffic and tourism on live maps.",
-        metric="custom scoring engine  ·  heatmaps  ·  GitHub Pages",
-        chips=[("Python", "python"), ("pandas", "pandas"), ("Streamlit", "streamlit"), ("Leaflet", None)],
-    ),
-    dict(
-        file="betech", title="BeTech Hackathon", glyph="huggingface",
-        tag="1ST PRIZE · 2025", tag_c=AMBER, a=AMBER, b=PINK,
-        desc="Estimates diabetes probability from noisy, unstructured clinical notes with an ensemble "
-             "of clinical NLP models such as BioClinicalBERT. With Roche, BEST Madrid & UPM.",
-        metric="clinical NLP  ·  model ensemble  ·  early decision support",
-        chips=[("Python", "python"), ("Hugging Face", "huggingface"), ("scikit-learn", "scikitlearn")],
-    ),
-    dict(
-        file="indesia", title="IndesIA Hackathon", glyph="openai",
-        tag="1ST PRIZE · 2025", tag_c=AMBER, a=AMBER, b=CYAN,
-        desc="Reads corrected engineering PDFs, extracts the marked regions with PyMuPDF + OpenCV and "
-             "reviews them with GPT-4o. Built with Técnicas Reunidas & Bravent.",
-        metric="PDF vision pipeline  ·  GPT-4o review  ·  Dockerised API",
-        chips=[("React", "react"), ("TypeScript", "typescript"), ("FastAPI", "fastapi"), ("OpenAI", "openai")],
-    ),
-]
-
-
-def chip(x: float, y: float, label: str, slug: str | None, h: float = 30) -> tuple[str, float]:
-    fs = 14
-    pad = 12
-    iw = 15 if slug else 0
-    gap = 8 if slug else 0
-    w = pad + iw + gap + measure(label, "jb400", fs) + pad
-    out = (f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="#ffffff" '
-           f'fill-opacity=".045" stroke="#ffffff" stroke-opacity=".08"/>')
-    if slug:
-        out += icon(slug, x + pad, y + (h - iw) / 2, iw)
-    out += (f'<text x="{x + pad + iw + gap:.1f}" y="{y + h / 2 + 5}" class="jb w4" font-size="{fs}" '
-            f'fill="{MUTED}">{esc(label)}</text>')
-    return out, w
-
-
-def project_cards() -> None:
-    W, H = 600, 350
-    for i, p in enumerate(PROJECTS):
-        a, b = p["a"], p["b"]
-        tag_fs, tag_ls = 12.5, 1.3
-        tw = spaced_width(p["tag"], "jb700", tag_fs, tag_ls) + 26
-        tx = W - 30 - tw
-        desc = wrap(p["desc"], "sg400", 18.5, W - 64)
-        assert len(desc) <= 3, (p["file"], desc)
-        parts = [
-            f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="24" fill="{PANEL}"/>',
-            f'<g clip-path="url(#cl)"><circle class="orb" cx="{W - 40}" cy="30" r="190" fill="url(#orb)"/>'
-            f'<rect width="{W}" height="{H}" fill="url(#grid)" mask="url(#gm)"/></g>',
-            f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="24" stroke="url(#bd)" stroke-width="1.6"/>',
-            # icon tile
-            f'<rect x="30" y="30" width="58" height="58" rx="16" fill="url(#tile)"/>',
-            f'<rect x="30.5" y="30.5" width="57" height="57" rx="15.5" stroke="#fff" stroke-opacity=".18"/>',
-            icon(p["glyph"], 44, 44, 30, "#ffffff"),
-            # tag
-            f'<rect x="{tx:.1f}" y="44" width="{tw:.1f}" height="30" rx="15" fill="{p["tag_c"]}" fill-opacity=".1" '
-            f'stroke="{p["tag_c"]}" stroke-opacity=".45"/>',
-            f'<text x="{tx + 13:.1f}" y="64" class="jb w7" font-size="{tag_fs}" letter-spacing="{tag_ls}" '
-            f'fill="{p["tag_c"]}">{esc(p["tag"])}</text>',
-            f'<text x="30" y="136" class="sg w7" font-size="32" letter-spacing="-.6" fill="{TEXT}">{esc(p["title"])}</text>',
-        ]
-        for j, line in enumerate(desc):
-            parts.append(f'<text x="30" y="{170 + j * 26}" class="sg w4" font-size="18.5" fill="{MUTED}">{esc(line)}</text>')
-        parts.append(f'<rect x="30" y="{254}" width="3" height="20" rx="1.5" fill="url(#tile)"/>'
-                     f'<text x="44" y="269" class="jb w7" font-size="14.5" fill="{a}">{esc(p["metric"])}</text>')
-        cx = 30
-        for label, slug in p["chips"]:
-            svg, w = chip(cx, 294, label, slug)
-            parts.append(svg)
-            cx += w + 8
-        assert cx < W - 76, (p["file"], cx)
-        # arrow
-        parts.append(f'<g class="arrow"><circle cx="{W - 46}" cy="309" r="17" fill="#ffffff" fill-opacity=".05" '
-                     f'stroke="#ffffff" stroke-opacity=".12"/><path d="M{W - 52} 315 l12 -12 M{W - 49} 303 h9 v9" '
-                     f'stroke="{TEXT}" stroke-width="2" stroke-linecap="round"/></g>')
-        defs = f"""
-<clipPath id="cl"><rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="24"/></clipPath>
-<radialGradient id="orb"><stop offset="0" stop-color="{a}" stop-opacity=".22"/><stop offset="1" stop-color="{a}" stop-opacity="0"/></radialGradient>
-<linearGradient id="tile" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>
-<linearGradient id="bd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}" stop-opacity=".9"/><stop offset=".3" stop-color="{STROKE}"/><stop offset=".7" stop-color="{STROKE}"/><stop offset="1" stop-color="{b}" stop-opacity=".7"/>{ROTATE_BORDER.format(dur=8 + i)}</linearGradient>
-<pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" stroke="#fff" stroke-opacity=".035"/></pattern>
-<radialGradient id="gf" cx="1" cy="0" r="1"><stop offset="0" stop-color="#fff"/><stop offset=".8" stop-color="#000"/></radialGradient>
-<mask id="gm"><rect width="{W}" height="{H}" fill="url(#gf)"/></mask>
-"""
-        css = (".orb{animation:ob 6s ease-in-out infinite;transform-origin:560px 30px}"
-               "@keyframes ob{50%{transform:scale(1.25);opacity:.6}}"
-               f".arrow{{animation:ar 3s ease-in-out infinite;animation-delay:{i * .4:.1f}s}}"
-               "@keyframes ar{0%,70%,100%{transform:none}80%{transform:translate(4px,-4px)}}")
-        save(f"projects/{p['file']}.svg",
-             document("".join(parts), W, H, ["sg400", "sg700", "jb400", "jb700"], css, p["title"], defs))
-
-
-# ── 6. data-engineering pipeline ───────────────────────────────────────────
-
-STAGES = [
-    ("01 · STREAM", "Apache Kafka", "apachekafka", "KRaft cluster · real-time", "practica-kafka-etsit", CYAN),
-    ("02 · PROCESS", "Apache Spark", "apachespark", "PySpark + Scala · ML", "flight-prediction", AMBER),
-    ("03 · ORCHESTRATE", "Airflow", "apacheairflow", "scheduled, dockerised DAGs", "flight-prediction", VIOLET),
-    ("04 · OBSERVE", "Kubernetes", "kubernetes", "Prometheus + Grafana", "k8s-iot-monitoring", PINK),
-]
-
-
-def pipeline() -> None:
-    W, H = 1200, 420
-    bw, bh, by = 236, 196, 70
-    gap = (W - 60 - 4 * bw) / 3
-    xs = [30 + k * (bw + gap) for k in range(4)]
-    cy = by + bh / 2
-    flow = f"M10 {cy} H{W - 10}"
-    parts = [
-        f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="24" fill="{BG1}"/>',
-        f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="24" fill="url(#dots)"/>',
-        f'<text x="30" y="44" class="jb w7" font-size="13" letter-spacing="2" fill="{DIM}">DATA FLOW · END-TO-END PRACTICE PROJECTS @ ETSIT-UPM</text>',
-        f'<path d="{flow}" stroke="{STROKE}" stroke-width="2"/>',
-        f'<path class="flow" d="{flow}" stroke="url(#fl)" stroke-width="2.5" stroke-dasharray="6 14"/>',
-    ]
-    for k in range(9):
-        col = [CYAN, AMBER, VIOLET, PINK][k % 4]
-        dur = 5.5
-        parts.append(f'<circle r="4.5" fill="{col}" filter="url(#glow)">'
-                     f'<animateMotion path="{flow}" dur="{dur}s" begin="{-k * dur / 9:.2f}s" repeatCount="indefinite"/></circle>')
-    for k, (stage, name, slug, note, repo, col) in enumerate(STAGES):
-        x = xs[k]
-        parts.append(
-            f'<g><rect x="{x:.1f}" y="{by}" width="{bw}" height="{bh}" rx="20" fill="{PANEL}"/>'
-            f'<rect x="{x:.1f}" y="{by}" width="{bw}" height="{bh}" rx="20" fill="url(#st{k})"/>'
-            f'<rect x="{x:.1f}" y="{by}" width="{bw}" height="{bh}" rx="20" stroke="{col}" stroke-opacity=".5" stroke-width="1.5">'
-            f'<animate attributeName="stroke-opacity" values=".25;1;.25" dur="5.5s" begin="{k * 5.5 / 4 * 0.98:.2f}s" repeatCount="indefinite"/></rect>'
-            f'<rect x="{x + 22:.1f}" y="{by + 22}" width="50" height="50" rx="14" fill="{col}" fill-opacity=".12" stroke="{col}" stroke-opacity=".4"/>'
-            f'{icon(slug, x + 33, by + 33, 28, col)}'
-            f'<text x="{x + 22:.1f}" y="{by + 104}" class="jb w7" font-size="12.5" letter-spacing="1.5" fill="{col}">{esc(stage)}</text>'
-            f'<text x="{x + 22:.1f}" y="{by + 134}" class="sg w7" font-size="25" letter-spacing="-.4" fill="{TEXT}">{esc(name)}</text>'
-            f'<text x="{x + 22:.1f}" y="{by + 162}" class="sg w4" font-size="16" fill="{MUTED}">{esc(note)}</text>'
-            f'<text x="{x + 22:.1f}" y="{by + 183}" class="jb w4" font-size="12.5" fill="{DIM}">{esc("↳ " + repo)}</text></g>')
-    # infra band
-    infra = [("Docker", "docker"), ("Kubernetes", "kubernetes"), ("Prometheus", "prometheus"),
-             ("Grafana", "grafana"), ("Spark MLlib", "apachespark"), ("MongoDB", "mongodb"), ("Jupyter", "jupyter")]
-    band_y = 300
-    parts.append(f'<rect x="30" y="{band_y}" width="{W - 60}" height="90" rx="18" fill="#ffffff" fill-opacity=".025" stroke="{STROKE}" stroke-dasharray="4 6"/>'
-                 f'<text x="52" y="{band_y + 34}" class="jb w7" font-size="12.5" letter-spacing="2" fill="{DIM}">RUNS ON</text>')
-    cx = 52
-    for label, slug in infra:
-        svg, w = chip(cx, band_y + 46, label, slug)
-        parts.append(svg)
-        cx += w + 10
-    assert cx < W - 40, cx
-    defs = [f'<filter id="glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="4" result="b"/>'
-            f'<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>',
-            f'<linearGradient id="fl" x1="0" y1="0" x2="{W}" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{CYAN}"/><stop offset=".35" stop-color="{AMBER}"/>'
-            f'<stop offset=".65" stop-color="{VIOLET}"/><stop offset="1" stop-color="{PINK}"/></linearGradient>',
-            f'<pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#fff" fill-opacity=".05"/></pattern>']
-    for k, (*_, col) in enumerate(STAGES):
-        defs.append(f'<linearGradient id="st{k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{col}" stop-opacity=".09"/>'
-                    f'<stop offset="1" stop-color="{col}" stop-opacity="0"/></linearGradient>')
-    css = ".flow{animation:fw 1.2s linear infinite}@keyframes fw{to{stroke-dashoffset:-20}}"
-    save("pipeline.svg", document("".join(parts), W, H, ["sg400", "sg700", "jb400", "jb700"], css,
-                                  "Data engineering lab: Kafka → Spark → Airflow → Kubernetes", "".join(defs)))
-
-
-# ── 7. tech-stack marquee ──────────────────────────────────────────────────
+# ── 4. tech-stack marquee ──────────────────────────────────────────────────
 
 STACK = [
     [("Python", "python"), ("SQL", "postgresql"), ("pandas", "pandas"), ("NumPy", "numpy"),
@@ -673,7 +391,7 @@ def stack() -> None:
     save("stack.svg", document(body, W, H, ["sg500"], "".join(css), "Tech stack", defs))
 
 
-# ── 8. awards timeline ─────────────────────────────────────────────────────
+# ── 5. awards timeline ─────────────────────────────────────────────────────
 
 AWARDS = [
     ("2020", "EdwingEd Youth Entrepreneurship", "1st Prize · presented by the Mayor of Madrid", True),
@@ -764,7 +482,7 @@ def awards() -> None:
                                 "Awards and recognition 2020-2026", defs))
 
 
-# ── 9. footer ──────────────────────────────────────────────────────────────
+# ── 6. footer ──────────────────────────────────────────────────────────────
 
 
 def footer() -> None:
@@ -796,9 +514,6 @@ if __name__ == "__main__":
     header()
     section_titles()
     buttons()
-    terminal()
-    project_cards()
-    pipeline()
     stack()
     awards()
     footer()
