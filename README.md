@@ -1,11 +1,11 @@
 <div align="center">
 
-<img src="assets/header.svg" width="100%" alt="Alejandro Cuevas Cid — Data Systems Engineer @ UPM, founder of Sportimizer" />
+<img src="assets/header.svg?v=2" width="100%" alt="Alejandro Cuevas Cid — Data Systems Engineer @ UPM, founder of Sportimizer" />
 
 <br />
 
-<a href="https://www.linkedin.com/in/alejandro-cuevas-cid/"><img src="assets/buttons/linkedin.svg" height="64" alt="LinkedIn — in/alejandro-cuevas-cid" /></a>&nbsp;&nbsp;
-<a href="mailto:alejandrocuevascm@gmail.com"><img src="assets/buttons/email.svg" height="64" alt="Email — alejandrocuevascm@gmail.com" /></a>
+<a href="https://www.linkedin.com/in/alejandro-cuevas-cid/"><img src="assets/buttons/linkedin.svg?v=2" height="64" alt="LinkedIn — in/alejandro-cuevas-cid" /></a>&nbsp;&nbsp;
+<a href="mailto:alejandrocuevascm@gmail.com"><img src="assets/buttons/email.svg?v=2" height="64" alt="Email — alejandrocuevascm@gmail.com" /></a>
 
 </div>
 
