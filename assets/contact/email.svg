@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="142" height="52" viewBox="0 0 142 52" fill="none" role="img"><title>Email</title><style>@font-face{font-family:'SG';font-weight:700;src:url(data:font/woff2;base64,d09GMgABAAAAAANsAA8AAAAABjQAAAMTAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGhwbdBwqBmA/U1RBVCoAVBEICoR0hAoBNgIkAyQLFAAEIAVMByAbswQoHgl2DOVv0AnDMkIRPE/vln/uzLDNJkGqFlIRcfirucBWVN6fiFIZ3P0PEM556GZ6lkYyxdIM56RNZZPDMOAEAy4LqP0LLPypT/pA8OauJk3yuZZ1oZE8PTACuACAoAggCCAIAtj4VEQ1btq6M6HRAyaPJYQBSEkAGTVk4lgsQADBoLAQLBQRAPJQnAABFIIiDRA0ppiKwQbNX6YWpTiUq4Jho6qqBAFQC1V3oJVrI32pKFGELByjaSvgCoUYo9/8H8xc8QEBkM9VAiiERhAsBMiGAPlQ04YNnywAiggwGjQCzbqmY5sw1AdcLBSGQjRhACMYkxIMjP7MJe20yYYE3EKQlMKAkA5AFsAB7gBfAG7tBgMIKiXR40ciru8Wc0xR1wxY+EoC8ddOcNFLTOyFPTC46Lno+DPbXfgEFXvabWGGxC87i5LEEl0lfqxYzn2HJJ5hL0yALfHXr51FL69C7Ph5P9vq9eAEgrhI3GXhq1eTmhOL8nXd9lxPCjHHwV6YIWKvPnyn66LXIvbC88SSTsAxjnZwNj12Fj0s4xx6nJOXKFvvqV/p6/2eo2NlVSjeY/iQgUUHWqdHa99TpV+hWuNq/197XC0tbi/K1zCf+VettuXwkv+e/o+826P+z16kZ7ayZRu0jZYv38pLltTFnn2acXpXLBymYeLa9Lr7vOnekcbT+SxYpZNfvmmlSuUbd/Wqz88XTZQv927ApKJn2nYvWn/ghAF9LhTIV3x45yK/FJCstc4m8w+p0rBmBXtedE7evCtompiboOmPs6tmuXO6QpU/yRJ+W6Nsy6Kl29ZuOrdOifVFS31eqUi7G6aX8L7x/W+86Hvff0/TH+f+SFpRLCCNTC4WQGXglbp3LoYACioXP36lX7j2b5bWXwK83+xtAPj8uxEFKJqaq8vpykAaCgCBX7f10hVQtQEBcvp4XD/+B1WShqohRcWmstg01V1pChQnX0CAdNpjiKAO8ZSoKYlGTHoYgoQQcAn9JINFHjoyhGFMYTQDmEg3hjCCYQxnMg0Zx2gGowEgtSoCAAAA) format('woff2');}.sg{font-family:'SG',ui-sans-serif,system-ui,'Segoe UI',sans-serif}.jb{font-family:'JB',ui-monospace,SFMono-Regular,Consolas,monospace}.w4{font-weight:400}.w5{font-weight:500}.w7{font-weight:700}@media (prefers-reduced-motion: reduce){*{animation:none!important}}.shine{animation:sh 5s ease-in-out 1.2s infinite}@keyframes sh{0%,50%{transform:skewX(-20deg) translateX(0)}100%{transform:skewX(-20deg) translateX(262px)}}.arrow{animation:ar 3s ease-in-out 0.5s infinite}@keyframes ar{0%,70%,100%{transform:none}82%{transform:translate(3px,-3px)}}</style><defs>
+<clipPath id="c"><rect x="2" y="2" width="138" height="48" rx="24.0"/></clipPath>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141831"/><stop offset="1" stop-color="#07080f"/></linearGradient>
+<radialGradient id="tint" cx="0" cy=".5" r=".9"><stop offset="0" stop-color="#f472b6" stop-opacity=".35"/><stop offset="1" stop-color="#f472b6" stop-opacity="0"/></radialGradient>
+<linearGradient id="disc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f472b6"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+<linearGradient id="cm" x1="0" y1="0" x2="142" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f472b6"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<filter id="blur" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="2.5"/></filter>
+</defs>
+<rect x="2" y="2" width="138" height="48" rx="24.0" fill="url(#bg)"/>
+<rect x="2" y="2" width="138" height="48" rx="24.0" fill="url(#tint)"/>
+<g clip-path="url(#c)"><rect class="shine" x="-80" y="-10" width="50" height="72" fill="url(#sh)"/></g>
+<rect x="2" y="2" width="138" height="48" rx="24.0" stroke="#ffffff" stroke-opacity=".1" stroke-width="1.2"/>
+<rect x="2" y="2" width="138" height="48" rx="24.0" pathLength="100" stroke="url(#cm)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="16 84" filter="url(#blur)" opacity=".8">
+<animate attributeName="stroke-dashoffset" from="150" to="50" dur="3.5s" repeatCount="indefinite"/></rect>
+<rect x="2" y="2" width="138" height="48" rx="24.0" pathLength="100" stroke="url(#cm)" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="16 84">
+<animate attributeName="stroke-dashoffset" from="150" to="50" dur="3.5s" repeatCount="indefinite"/></rect>
+<circle cx="27" cy="26.0" r="17" fill="url(#disc)"/>
+<circle cx="27" cy="26.0" r="16.5" stroke="#fff" stroke-opacity=".25"/>
+<g stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" fill="none"><rect x="18" y="19.5" width="18" height="13" rx="3"/><path d="M20.5 23.0 l6.5 5 l6.5 -5"/></g>
+<text x="52" y="33.0" class="sg w7" font-size="19" fill="#eef0fb">Email</text>
+<path class="arrow" d="M111.8 31.0 l9 -9 M113.8 22.0 h7 v7" stroke="#9aa2c7" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+</svg>

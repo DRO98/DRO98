@@ -1,13 +1,7 @@
-<div align="center">
+<a href="https://www.linkedin.com/in/alejandro-cuevas-cid/"><img src="assets/contact/linkedin.svg" height="38" alt="LinkedIn" /></a>
+<a href="mailto:alejandrocuevascm@gmail.com"><img src="assets/contact/email.svg" height="38" alt="Email" /></a>
 
 <img src="assets/header.svg?v=2" width="100%" alt="Alejandro Cuevas Cid — Data Systems Engineer @ UPM, founder of Sportimizer" />
-
-<br />
-
-<a href="https://www.linkedin.com/in/alejandro-cuevas-cid/"><img src="assets/buttons/linkedin.svg?v=2" height="64" alt="LinkedIn — in/alejandro-cuevas-cid" /></a>&nbsp;&nbsp;
-<a href="mailto:alejandrocuevascm@gmail.com"><img src="assets/buttons/email.svg?v=2" height="64" alt="Email — alejandrocuevascm@gmail.com" /></a>
-
-</div>
 
 <br />
 

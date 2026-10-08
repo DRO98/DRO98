@@ -285,9 +285,6 @@ def section_titles() -> None:
 
 # ── 3. contact buttons ─────────────────────────────────────────────────────
 
-ENVELOPE = ('<g stroke="#fff" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" fill="none">'
-            '<rect x="{x}" y="{y}" width="30" height="22" rx="5"/><path d="M{x1} {y1} l11.5 8.5 l11.5 -8.5"/></g>')
-
 BUTTONS = [
     # file, label, handle, colour a, colour b
     ("linkedin", "LinkedIn", "in/alejandro-cuevas-cid", "#0A66C2", "#38bdf8"),
@@ -296,51 +293,51 @@ BUTTONS = [
 
 
 def buttons() -> None:
-    W, H = 440, 104
+    """Compact contact chips that sit above the header."""
+    H = 52
     r = H / 2 - 2
-    for i, (slug, label, handle, a, b) in enumerate(BUTTONS):
-        cx, cy = 54, H / 2
+    for i, (slug, label, _handle, a, b) in enumerate(BUTTONS):
+        cx, cy = 27, H / 2
         if slug == "linkedin":
-            glyph = (f'<text x="{cx}" y="{cy + 10}" text-anchor="middle" class="sg w7" font-size="30" '
-                     f'letter-spacing="-.5" fill="#fff">in</text>')
+            glyph = (f'<text x="{cx}" y="{cy + 6}" text-anchor="middle" class="sg w7" font-size="18" '
+                     f'letter-spacing="-.3" fill="#fff">in</text>')
         else:
-            glyph = ENVELOPE.format(x=cx - 15, y=cy - 11, x1=cx - 11.5, y1=cy - 5)
+            glyph = ('<g stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" fill="none">'
+                     f'<rect x="{cx - 9}" y="{cy - 6.5}" width="18" height="13" rx="3"/>'
+                     f'<path d="M{cx - 6.5} {cy - 3} l6.5 5 l6.5 -5"/></g>')
+        tx = 52
+        ax = tx + measure(label, "sg700", 19) + 12
+        W = round(ax + 30)
         pill = f'x="2" y="2" width="{W - 4}" height="{H - 4}" rx="{r}"'
         body = f"""
 <rect {pill} fill="url(#bg)"/>
 <rect {pill} fill="url(#tint)"/>
-<g clip-path="url(#c)"><rect class="shine" x="-140" y="-20" width="80" height="{H + 40}" fill="url(#sh)"/></g>
-<rect {pill} stroke="#ffffff" stroke-opacity=".09" stroke-width="1.5"/>
-<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="5" stroke-linecap="round" stroke-dasharray="14 86" filter="url(#blur)" opacity=".8">
-<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="4s" repeatCount="indefinite"/></rect>
-<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="2" stroke-linecap="round" stroke-dasharray="14 86">
-<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="4s" repeatCount="indefinite"/></rect>
-<circle cx="{cx}" cy="{cy}" r="32" fill="none" stroke="{b}" stroke-width="1.5">
-<animate attributeName="r" values="32;46" dur="2.4s" repeatCount="indefinite"/>
-<animate attributeName="opacity" values=".6;0" dur="2.4s" repeatCount="indefinite"/></circle>
-<circle cx="{cx}" cy="{cy}" r="32" fill="url(#disc)"/>
-<circle cx="{cx}" cy="{cy}" r="31.5" stroke="#fff" stroke-opacity=".25"/>
+<g clip-path="url(#c)"><rect class="shine" x="-80" y="-10" width="50" height="{H + 20}" fill="url(#sh)"/></g>
+<rect {pill} stroke="#ffffff" stroke-opacity=".1" stroke-width="1.2"/>
+<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="16 84" filter="url(#blur)" opacity=".8">
+<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="3.5s" repeatCount="indefinite"/></rect>
+<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="16 84">
+<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="3.5s" repeatCount="indefinite"/></rect>
+<circle cx="{cx}" cy="{cy}" r="17" fill="url(#disc)"/>
+<circle cx="{cx}" cy="{cy}" r="16.5" stroke="#fff" stroke-opacity=".25"/>
 {glyph}
-<text x="104" y="{cy - 3}" class="sg w7" font-size="28" letter-spacing="-.4" fill="{TEXT}">{esc(label)}</text>
-<text x="105" y="{cy + 23}" class="jb w4" font-size="14.5" fill="{MUTED}">{esc(handle)}</text>
-<g class="arrow"><circle cx="{W - 46}" cy="{cy}" r="22" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".14"/>
-<path d="M{W - 52} {cy + 6} l12 -12 M{W - 49} {cy - 6} h9 v9" stroke="{TEXT}" stroke-width="2.2" stroke-linecap="round" fill="none"/></g>
+<text x="{tx}" y="{cy + 7}" class="sg w7" font-size="19" fill="{TEXT}">{esc(label)}</text>
+<path class="arrow" d="M{ax:.1f} {cy + 5} l9 -9 M{ax + 2:.1f} {cy - 4} h7 v7" stroke="{MUTED}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
 """
-        assert 105 + measure(handle, "jb400", 14.5) < W - 76, slug
         defs = f"""
 <clipPath id="c"><rect {pill}/></clipPath>
 <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141831"/><stop offset="1" stop-color="{BG0}"/></linearGradient>
-<radialGradient id="tint" cx="0" cy=".5" r=".75"><stop offset="0" stop-color="{a}" stop-opacity=".35"/><stop offset="1" stop-color="{a}" stop-opacity="0"/></radialGradient>
+<radialGradient id="tint" cx="0" cy=".5" r=".9"><stop offset="0" stop-color="{a}" stop-opacity=".35"/><stop offset="1" stop-color="{a}" stop-opacity="0"/></radialGradient>
 <linearGradient id="disc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>
 <linearGradient id="cm" x1="0" y1="0" x2="{W}" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>
-<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<filter id="blur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<filter id="blur" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="2.5"/></filter>
 """
         css = (f".shine{{animation:sh 5s ease-in-out {i * 1.2:.1f}s infinite}}"
-               "@keyframes sh{0%,50%{transform:skewX(-20deg) translateX(0)}100%{transform:skewX(-20deg) translateX(720px)}}"
+               f"@keyframes sh{{0%,50%{{transform:skewX(-20deg) translateX(0)}}100%{{transform:skewX(-20deg) translateX({W + 120}px)}}}}"
                f".arrow{{animation:ar 3s ease-in-out {i * .5:.1f}s infinite}}"
-               "@keyframes ar{0%,70%,100%{transform:none}82%{transform:translateX(5px)}}")
-        save(f"buttons/{slug}.svg", document(body, W, H, ["sg700", "jb400"], css, f"{label} — {handle}", defs))
+               "@keyframes ar{0%,70%,100%{transform:none}82%{transform:translate(3px,-3px)}}")
+        save(f"contact/{slug}.svg", document(body, W, H, ["sg700"], css, label, defs))
 
 
 # ── 4. tech-stack marquee ──────────────────────────────────────────────────
