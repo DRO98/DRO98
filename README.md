@@ -19,11 +19,5 @@
   <img src="assets/sections/02-recognition.svg" width="100%" alt="02 / Recognition" />
 </picture>
 
-<img src="assets/awards.svg" width="100%" alt="Awards: 1st Prize EdwingEd Youth Entrepreneurship (2020), 1st Prize Maestro Miguel Literature Award (2023), 1st Prize Youth IGF Spain (2024), 1st Prize BeTech Hackathon (2025), 1st Prize IndesIA Hackathon (2025), ActúaUPM 23rd Business Creation Competition (2026, advancing)" />
+<img src="assets/awards.svg?v=2" width="100%" alt="Awards: 1st Prize EdwingEd Youth Entrepreneurship (2020), 1st Prize Youth IGF Spain (2024), 1st Prize BeTech Hackathon (2025), 1st Prize IndesIA Hackathon (2025), ActúaUPM 23rd Business Creation Competition (2026, advancing)" />
 
-<br />
-
-<picture>
-  <source media="(prefers-color-scheme: light)" srcset="assets/footer-light.svg" />
-  <img src="assets/footer.svg" width="100%" alt="Thanks for stopping by — let's build something with data." />
-</picture>

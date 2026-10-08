@@ -392,7 +392,6 @@ def stack() -> None:
 
 AWARDS = [
     ("2020", "EdwingEd Youth Entrepreneurship", "1st Prize · presented by the Mayor of Madrid", True),
-    ("2023", "Maestro Miguel Literature Award", "1st Prize · Villanueva del Pardillo", True),
     ("2024", "Youth IGF Spain", "1st Prize · ETSIT-UPM, DigitalES, AdigitalES", True),
     ("2025", "BeTech Hackathon", "1st Prize · UPM, BEST Madrid & Roche", True),
     ("2025", "IndesIA Hackathon", "1st Prize · Técnicas Reunidas & Bravent", True),
@@ -479,33 +478,6 @@ def awards() -> None:
                                 "Awards and recognition 2020-2026", defs))
 
 
-# ── 6. footer ──────────────────────────────────────────────────────────────
-
-
-def footer() -> None:
-    W, H = 1200, 190
-    waves = []
-    for k, (col, amp, wl, y, dur, op) in enumerate([
-        (CYAN, 16, 300, 120, 9, .55), (VIOLET, 22, 400, 128, 13, .45), (PINK, 12, 240, 136, 7, .4)]):
-        pts = []
-        x = -wl
-        d = f"M{-wl} {y}"
-        while x < W + wl:
-            d += f" q{wl / 4} {-amp} {wl / 2} 0 t{wl / 2} 0"
-            x += wl
-        waves.append(f'<path class="w{k}" d="{d}" stroke="{col}" stroke-opacity="{op}" stroke-width="2"/>')
-        waves.append(f"<style>.w{k}{{animation:wv{k} {dur}s linear infinite}}@keyframes wv{k}{{to{{transform:translateX({wl}px)}}}}</style>")
-    msg = "Thanks for stopping by — let's build something with data."
-    body = (f'<g mask="url(#fade)">{"".join(waves)}</g>'
-            f'<text x="{W / 2}" y="60" text-anchor="middle" class="sg w5" font-size="26" fill="{TEXT}">{esc(msg)}</text>'
-            f'<text x="{W / 2}" y="{H - 12}" text-anchor="middle" class="jb w4" font-size="13" fill="{DIM}">'
-            f'ALEJANDRO CUEVAS CID · MADRID · 2026</text>')
-    defs = (f'<linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#000"/><stop offset=".2" stop-color="#fff"/>'
-            f'<stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>'
-            f'<mask id="fade"><rect width="{W}" height="{H}" fill="url(#edge)"/></mask>')
-    save_themed("footer.svg", document(body, W, H, ["sg500", "jb400"], "", "Thanks for visiting", defs))
-
-
 if __name__ == "__main__":
     print("building assets/")
     header()
@@ -513,4 +485,3 @@ if __name__ == "__main__":
     buttons()
     stack()
     awards()
-    footer()
