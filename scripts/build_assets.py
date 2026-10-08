@@ -84,8 +84,48 @@ ROLES = [
 ]
 
 
+CONTACTS = [
+    # glyph, handle, colour a, colour b
+    ("linkedin", "in/alejandro-cuevas-cid", "#0A66C2", "#38bdf8"),
+    ("email", "alejandrocuevascm@gmail.com", PINK, VIOLET),
+]
+
+
+def contact_chips(x: float, y: float, h: float = 44) -> tuple[str, str]:
+    """Contact pills drawn inside the header card. Returns (body, defs)."""
+    body, defs = [], []
+    for i, (slug, handle, a, b) in enumerate(CONTACTS):
+        cx, cy = x + h / 2, y + h / 2
+        if slug == "linkedin":
+            glyph = (f'<text x="{cx:.1f}" y="{cy + 5.5:.1f}" text-anchor="middle" class="sg w7" font-size="16" '
+                     f'letter-spacing="-.3" fill="#fff">in</text>')
+        else:
+            glyph = ('<g stroke="#fff" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round" fill="none">'
+                     f'<rect x="{cx - 8:.1f}" y="{cy - 5.5:.1f}" width="16" height="11" rx="2.5"/>'
+                     f'<path d="M{cx - 5.5:.1f} {cy - 2.5:.1f} l5.5 4.2 l5.5 -4.2"/></g>')
+        tx = x + h + 4
+        w = tx - x + measure(handle, "jb400", 15) + 20
+        pill = f'x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h}" rx="{h / 2}"'
+        body.append(
+            f'<rect {pill} fill="{BG1}" fill-opacity=".75"/>'
+            f'<rect {pill} fill="url(#ct{i})"/>'
+            f'<rect {pill} stroke="#ffffff" stroke-opacity=".1" stroke-width="1.2"/>'
+            f'<rect {pill} pathLength="100" stroke="url(#cm{i})" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="16 84">'
+            f'<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="3.5s" repeatCount="indefinite"/></rect>'
+            f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="15" fill="url(#cd{i})"/>{glyph}'
+            f'<text x="{tx:.1f}" y="{cy + 5:.1f}" class="jb w4" font-size="15" fill="{TEXT}">{esc(handle)}</text>')
+        defs.append(
+            f'<radialGradient id="ct{i}" cx="0" cy=".5" r=".9"><stop offset="0" stop-color="{a}" stop-opacity=".3"/>'
+            f'<stop offset="1" stop-color="{a}" stop-opacity="0"/></radialGradient>'
+            f'<linearGradient id="cd{i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>'
+            f'<linearGradient id="cm{i}" x1="{x:.1f}" y1="0" x2="{x + w:.1f}" y2="0" gradientUnits="userSpaceOnUse">'
+            f'<stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>')
+        x += w + 14
+    return "".join(body), "".join(defs)
+
+
 def header() -> None:
-    W, H = 1200, 420
+    W, H = 1200, 470
     rnd = random.Random(98)
 
     # data-graph constellation on the right
@@ -175,7 +215,7 @@ def header() -> None:
             f'{typing_anim(n, cw, t0, T, hold=hold, attr="x").replace("values=", "additive=\"sum\" values=")}'
             f'</rect></g>')
 
-    meta = ["data engineering", "applied AI", "founder @ sportimizer", "5x first prize"]
+    meta = ["data engineering", "applied AI", "founder @ sportimizer", "4x first prize"]
     mx = 68
     meta_svg = [f'<g class="rise" style="animation-delay:.7s">']
     meta_svg.append(f'<rect x="{mx}" y="414" width="34" height="2" rx="1" fill="url(#nameGrad)"/>')
@@ -187,6 +227,7 @@ def header() -> None:
             meta_svg.append(f'<circle cx="{mx + 14:.1f}" cy="416" r="2.5" fill="{[CYAN, VIOLET, PINK][i]}"/>')
             mx += 28
     meta_svg.append("</g>")
+    chips, chip_defs = contact_chips(62, 392)
 
     defs = f"""
 <clipPath id="frame"><rect width="{W}" height="{H}" rx="28"/></clipPath>
@@ -207,6 +248,7 @@ def header() -> None:
 <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{CYAN}" stop-opacity=".55"/>
 <stop offset=".35" stop-color="{STROKE}"/><stop offset=".7" stop-color="{STROKE}"/><stop offset="1" stop-color="{PINK}" stop-opacity=".55"/>
 {ROTATE_BORDER.format(dur=14)}</linearGradient>
+{chip_defs}
 """
     css = """
 .b1{animation:d1 17s ease-in-out infinite alternate}
@@ -236,6 +278,7 @@ def header() -> None:
 <rect class="scan" y="0" width="{W}" height="140" fill="url(#scan)"/>
 <g>{"".join(graph)}</g>
 <g transform="translate(0 -60)">{name}{"".join(typer)}{"".join(meta_svg)}</g>
+<g class="rise" style="animation-delay:.9s">{chips}</g>
 </g>
 <rect x=".75" y=".75" width="{W - 1.5}" height="{H - 1.5}" rx="27.5" stroke="url(#rim)" stroke-width="1.5"/>
 """
@@ -281,63 +324,6 @@ def section_titles() -> None:
         slug = title.lower().replace(" ", "-")
         save_themed(f"sections/{num}-{slug}.svg",
              document("".join(parts), W, H, ["sg700", "jb400", "jb700"], "", f"{num} {title}", defs))
-
-
-# ── 3. contact buttons ─────────────────────────────────────────────────────
-
-BUTTONS = [
-    # file, label, handle, colour a, colour b
-    ("linkedin", "LinkedIn", "in/alejandro-cuevas-cid", "#0A66C2", "#38bdf8"),
-    ("email", "Email", "alejandrocuevascm@gmail.com", PINK, VIOLET),
-]
-
-
-def buttons() -> None:
-    """Compact contact chips that sit above the header."""
-    H = 52
-    r = H / 2 - 2
-    for i, (slug, label, _handle, a, b) in enumerate(BUTTONS):
-        cx, cy = 27, H / 2
-        if slug == "linkedin":
-            glyph = (f'<text x="{cx}" y="{cy + 6}" text-anchor="middle" class="sg w7" font-size="18" '
-                     f'letter-spacing="-.3" fill="#fff">in</text>')
-        else:
-            glyph = ('<g stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" fill="none">'
-                     f'<rect x="{cx - 9}" y="{cy - 6.5}" width="18" height="13" rx="3"/>'
-                     f'<path d="M{cx - 6.5} {cy - 3} l6.5 5 l6.5 -5"/></g>')
-        tx = 52
-        ax = tx + measure(label, "sg700", 19) + 12
-        W = round(ax + 30)
-        pill = f'x="2" y="2" width="{W - 4}" height="{H - 4}" rx="{r}"'
-        body = f"""
-<rect {pill} fill="url(#bg)"/>
-<rect {pill} fill="url(#tint)"/>
-<g clip-path="url(#c)"><rect class="shine" x="-80" y="-10" width="50" height="{H + 20}" fill="url(#sh)"/></g>
-<rect {pill} stroke="#ffffff" stroke-opacity=".1" stroke-width="1.2"/>
-<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="16 84" filter="url(#blur)" opacity=".8">
-<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="3.5s" repeatCount="indefinite"/></rect>
-<rect {pill} pathLength="100" stroke="url(#cm)" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="16 84">
-<animate attributeName="stroke-dashoffset" from="{100 + i * 50}" to="{i * 50}" dur="3.5s" repeatCount="indefinite"/></rect>
-<circle cx="{cx}" cy="{cy}" r="17" fill="url(#disc)"/>
-<circle cx="{cx}" cy="{cy}" r="16.5" stroke="#fff" stroke-opacity=".25"/>
-{glyph}
-<text x="{tx}" y="{cy + 7}" class="sg w7" font-size="19" fill="{TEXT}">{esc(label)}</text>
-<path class="arrow" d="M{ax:.1f} {cy + 5} l9 -9 M{ax + 2:.1f} {cy - 4} h7 v7" stroke="{MUTED}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-"""
-        defs = f"""
-<clipPath id="c"><rect {pill}/></clipPath>
-<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141831"/><stop offset="1" stop-color="{BG0}"/></linearGradient>
-<radialGradient id="tint" cx="0" cy=".5" r=".9"><stop offset="0" stop-color="{a}" stop-opacity=".35"/><stop offset="1" stop-color="{a}" stop-opacity="0"/></radialGradient>
-<linearGradient id="disc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>
-<linearGradient id="cm" x1="0" y1="0" x2="{W}" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>
-<linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<filter id="blur" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="2.5"/></filter>
-"""
-        css = (f".shine{{animation:sh 5s ease-in-out {i * 1.2:.1f}s infinite}}"
-               f"@keyframes sh{{0%,50%{{transform:skewX(-20deg) translateX(0)}}100%{{transform:skewX(-20deg) translateX({W + 120}px)}}}}"
-               f".arrow{{animation:ar 3s ease-in-out {i * .5:.1f}s infinite}}"
-               "@keyframes ar{0%,70%,100%{transform:none}82%{transform:translate(3px,-3px)}}")
-        save(f"contact/{slug}.svg", document(body, W, H, ["sg700"], css, label, defs))
 
 
 # ── 4. tech-stack marquee ──────────────────────────────────────────────────
@@ -482,6 +468,5 @@ if __name__ == "__main__":
     print("building assets/")
     header()
     section_titles()
-    buttons()
     stack()
     awards()
