@@ -215,7 +215,7 @@ def header() -> None:
             f'{typing_anim(n, cw, t0, T, hold=hold, attr="x").replace("values=", "additive=\"sum\" values=")}'
             f'</rect></g>')
 
-    meta = ["data engineering", "applied AI", "founder @ sportimizer", "4x first prize"]
+    meta = ["data engineering", "applied AI", "founder @ sportimizer"]
     mx = 68
     meta_svg = [f'<g class="rise" style="animation-delay:.7s">']
     meta_svg.append(f'<rect x="{mx}" y="414" width="34" height="2" rx="1" fill="url(#nameGrad)"/>')
