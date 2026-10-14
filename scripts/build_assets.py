@@ -76,10 +76,10 @@ ROTATE_BORDER = ('<animateTransform attributeName="gradientTransform" type="rota
 # ── 1. hero header ─────────────────────────────────────────────────────────
 
 ROLES = [
-    "Data Systems Engineer @ UPM",
+    "Data Engineer @ UPM",
     "Founder & dev of Sportimizer ERP",
     "2x hackathon winner: BeTech, IndesIA",
-    "Building auditable AI systems",
+    "Building Data & AI systems",
     "Turning data into decisions",
 ]
 
